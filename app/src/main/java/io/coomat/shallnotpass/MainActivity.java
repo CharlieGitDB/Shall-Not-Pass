@@ -1,6 +1,10 @@
 package io.coomat.shallnotpass;
 
 import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnEditorAction;
+import butterknife.internal.ListenerMethod;
 import io.coomat.shallnotpass.helper.ConfigHelper;
 
 import android.content.Intent;
@@ -22,15 +26,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Validator.ValidationListener {
 
-    private TextView introText;
+    @BindView(R.id.introText)
+    public TextView introText;
 
     @Order(1)
     @Password(min = 8, scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS)
-    private EditText passwordText;
+    @BindView(R.id.passwordText)
+    public EditText passwordText;
 
     @Order(2)
     @ConfirmPassword
-    private EditText confirmPasswordText;
+    @BindView(R.id.confirmPasswordText)
+    public EditText confirmPasswordText;
 
     private Validator validator = new Validator(this);
 
@@ -40,17 +47,13 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         init();
-        initEvents();
     }
 
     private void init() {
         configHelper = new ConfigHelper(this);
-
-        introText = findViewById(R.id.introText);
-        passwordText = findViewById(R.id.passwordText);
-        confirmPasswordText = findViewById(R.id.confirmPasswordText);
 
         validator.setValidationListener(this);
 
@@ -61,21 +64,17 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
         }
     }
 
-    private void initEvents() {
-        confirmPasswordText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean submitted = false;
+    @OnEditorAction(R.id.confirmPasswordText)
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        boolean submitted = false;
 
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    submitted = true;
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            submitted = true;
 
-                    handleSubmit();
-                }
+            handleSubmit();
+        }
 
-                return submitted;
-            }
-        });
+        return submitted;
     }
 
     private void handleSubmit() {
