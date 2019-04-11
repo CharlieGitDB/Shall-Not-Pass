@@ -3,10 +3,12 @@
     <string name="shall_not_pass">Shall Not Pass:</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="add">Add</string>
-    <string name="logOut">Log Out</string>
+    <string name="log_out">Log Out</string>
     <string name="data">data</string>
     <string name="site">Site</string>
-    <string name="intro">Shall Not Pass is a free and open-source password manager that stores your passwords locally.\n\nAll data is encrypted saftely and securely!</string>
-    <string name="contentDescription">Shall Not Pass</string>
+    <string name="intro_unregistered">Shall Not Pass is a free and open-source password manager that stores your passwords locally.\n\nAll data is encrypted saftely and securely!\n\nPlease create your master password</string>
+    <string name="intro_registered">Shall Not Pass is a free and open-source password manager that stores your passwords locally.\n\nAll data is encrypted saftely and securely!\n\nPlease enter your master password</string>
+    <string name="content_description">Shall Not Pass</string>
 </resources>

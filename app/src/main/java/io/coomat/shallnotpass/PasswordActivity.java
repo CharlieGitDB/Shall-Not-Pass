@@ -7,7 +7,6 @@ import de.codecrafters.tableview.listeners.TableDataLongClickListener;
 import de.codecrafters.tableview.model.TableColumnWeightModel;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import io.coomat.shallnotpass.adapter.AccountDataAdapter;
-import io.coomat.shallnotpass.config.Constant;
 import io.coomat.shallnotpass.helper.AccountHelper;
 import io.coomat.shallnotpass.model.Account;
 import io.coomat.shallnotpass.model.CallBack;
@@ -30,6 +29,8 @@ public class PasswordActivity extends AppCompatActivity {
 
     private DialogMaker dialogMaker = new DialogMaker();
     private AccountHelper accountHelper;
+
+    private final String[] AccountsHeader = { "Site", "Username", "Password" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class PasswordActivity extends AppCompatActivity {
         colModel.setColumnWeight(3,1);
         tableView.setColumnModel(colModel);
 
-        tableView.setHeaderAdapter(new SimpleTableHeaderAdapter(context, Constant.AccountsHeader));
+        tableView.setHeaderAdapter(new SimpleTableHeaderAdapter(context, AccountsHeader));
 
         tableView.setDataAdapter(new AccountDataAdapter(context, accountHelper.getAllAccounts()));
 
