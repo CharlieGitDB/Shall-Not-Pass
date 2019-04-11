@@ -1,6 +1,8 @@
 package io.coomat.shallnotpass;
 
 import androidx.appcompat.app.AppCompatActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.listeners.TableDataClickListener;
 import de.codecrafters.tableview.listeners.TableDataLongClickListener;
@@ -25,7 +27,9 @@ import java.util.List;
 public class PasswordActivity extends AppCompatActivity {
 
     private Context context;
-    private TableView<Account> tableView;
+
+    @BindView(R.id.tableView)
+    public TableView<Account> tableView;
 
     private DialogMaker dialogMaker = new DialogMaker();
     private AccountHelper accountHelper;
@@ -36,13 +40,14 @@ public class PasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password);
+        ButterKnife.bind(this);
+
 
         init();
     }
 
     private void init() {
         context = this;
-        tableView = findViewById(R.id.tableView);
 
         accountHelper = new AccountHelper(context);
 
@@ -89,6 +94,9 @@ public class PasswordActivity extends AppCompatActivity {
     }
 
     private CallBack<Account> handleAddAccount() {
+        //TODO: ADD FORM VALIDATION
+        //TODO: POSSIBLY REMOVE MULTI LINE EDITING?
+
         return new CallBack<Account>() {
             @Override
             public void fire(Account account) {
