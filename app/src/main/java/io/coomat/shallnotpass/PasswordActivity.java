@@ -96,6 +96,7 @@ public class PasswordActivity extends AppCompatActivity {
     private CallBack<Account> handleAddAccount() {
         //TODO: ADD FORM VALIDATION
         //TODO: POSSIBLY REMOVE MULTI LINE EDITING?
+        //TODO: ADD MASTER ACCOUNT DELETE (This would delete the master account and all related child accounts)
 
         return new CallBack<Account>() {
             @Override
