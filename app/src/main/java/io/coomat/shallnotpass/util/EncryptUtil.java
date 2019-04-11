@@ -15,12 +15,12 @@ public class EncryptUtil {
     }
 
     public static String createHash(String unhashed) {
-        return BCrypt.hashpw(unhashed, BCrypt.gensalt(12));
+        return BCrypt.hashpw(unhashed, BCrypt.gensalt());
     }
 
     public static String encrypt(String raw) {
         try {
-            return AESCrypt.encrypt(Constant.hashedKey, raw);
+            return AESCrypt.encrypt(Constant.secret, raw);
         } catch (GeneralSecurityException e) {
             System.exit(500);
         }
@@ -30,7 +30,7 @@ public class EncryptUtil {
 
     public static String decrypt(String crypt) {
         try {
-            return AESCrypt.decrypt(Constant.hashedKey, crypt);
+            return AESCrypt.decrypt(Constant.secret, crypt);
         } catch (GeneralSecurityException e) {
             System.exit(500);
         }
