@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnEditorAction;
-import butterknife.internal.ListenerMethod;
 import io.coomat.shallnotpass.helper.ConfigHelper;
 
 import android.content.Intent;

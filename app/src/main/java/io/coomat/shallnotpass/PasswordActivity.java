@@ -42,7 +42,6 @@ public class PasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_password);
         ButterKnife.bind(this);
 
-
         init();
     }
 
@@ -94,15 +93,11 @@ public class PasswordActivity extends AppCompatActivity {
     }
 
     private CallBack<Account> handleAddAccount() {
-        //TODO: ADD FORM VALIDATION
-        //TODO: POSSIBLY REMOVE MULTI LINE EDITING?
-        //TODO: ADD MASTER ACCOUNT DELETE (This would delete the master account and all related child accounts).
-
         return new CallBack<Account>() {
             @Override
             public void fire(Account account) {
-                if (account == null || StringUtils.isEmpty(account.getSite()) || StringUtils.isEmpty(account.getUsername()) || StringUtils.isEmpty(account.getPassword())) {
-                    Toast.makeText(context, "All inputs are required to create an account", Toast.LENGTH_SHORT).show();
+                if (account == null || StringUtils.isEmpty(account.getSite()) || StringUtils.isEmpty(account.getPassword())) {
+                    Toast.makeText(context, "Site & password are required to create an account", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
