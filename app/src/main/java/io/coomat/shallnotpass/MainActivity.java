@@ -5,6 +5,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnEditorAction;
 import io.coomat.shallnotpass.helper.ConfigHelper;
+import io.coomat.shallnotpass.util.EncryptUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,10 @@ import com.mobsandgeeks.saripaar.annotation.Password;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Validator.ValidationListener {
+
+    private String INCORRECT_PASSWORD = "Incorrect password";
+
+    private Boolean isRegistered;
 
     @BindView(R.id.introText)
     public TextView introText;
@@ -56,38 +61,58 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
 
         validator.setValidationListener(this);
 
-        if (configHelper.isRegistered()) {
+        isRegistered = configHelper.isRegistered();
+
+        if (isRegistered) {
             introText.setText(R.string.intro_registered);
+            confirmPasswordText.setVisibility(View.GONE);
         } else {
             introText.setText(R.string.intro_unregistered);
         }
     }
 
+    @OnEditorAction(R.id.passwordText)
+    public boolean onPasswordAction(TextView v, int actionId, KeyEvent event) {
+        return handleSubmit(actionId);
+    }
+
     @OnEditorAction(R.id.confirmPasswordText)
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    public boolean onConfirmAction(TextView v, int actionId, KeyEvent event) {
+        return handleSubmit(actionId);
+    }
+
+    private boolean handleSubmit(int actionId) {
         boolean submitted = false;
 
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             submitted = true;
 
-            handleSubmit();
+            checkSubmit();
         }
 
         return submitted;
     }
 
-    private void handleSubmit() {
-        validator.validate();
+
+    private void checkSubmit() {
+        if (isRegistered) {
+            Boolean isCorrect = configHelper.checkPw(passwordText.getText().toString());
+
+            if (isCorrect) {
+                goToPasswordActivity();
+            } else {
+                passwordText.setText("");
+                Toast.makeText(this, INCORRECT_PASSWORD, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            validator.validate();
+        }
     }
 
     @Override
     public void onValidationSucceeded() {
-        if (!configHelper.isRegistered()) {
-            configHelper.createKey(passwordText.getText().toString());
-        }
-
-        Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
-        startActivity(intent);
+        configHelper.createKey(passwordText.getText().toString());
+        goToPasswordActivity();
     }
 
     @Override
@@ -102,5 +127,10 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
                 Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void goToPasswordActivity() {
+        Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
+        startActivity(intent);
     }
 }

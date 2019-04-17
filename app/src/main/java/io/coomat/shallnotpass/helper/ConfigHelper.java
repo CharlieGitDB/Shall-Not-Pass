@@ -26,6 +26,12 @@ public class ConfigHelper {
         return true;
     }
 
+    public Boolean checkPw(String unhashed) {
+        String masterKey = sharedPref.getString(KEY_ENTRY, null);
+
+        return EncryptUtil.check(unhashed, masterKey);
+    }
+
     public void createKey(String password) {
         SharedPreferences.Editor editor = sharedPref.edit();
         String hash = EncryptUtil.createHash(password);

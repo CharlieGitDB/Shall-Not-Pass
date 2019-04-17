@@ -35,8 +35,7 @@
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:textColor="@color/colorPrimary"
-            android:textColorHint="@color/colorPrimary"
-            />
+            android:textColorHint="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/confirmPasswordText"
