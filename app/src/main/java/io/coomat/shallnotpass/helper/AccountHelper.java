@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +59,15 @@ public class AccountHelper {
             account.setPassword(EncryptUtil.decrypt(account.getPassword()));
 
             accounts.add(account);
+        }
+
+        if (accounts.size() > 0) {
+            Collections.sort(accounts, new Comparator<Account>() {
+                @Override
+                public int compare(final Account a1, final Account a2) {
+                    return a1.getSite().compareTo(a2.getSite());
+                }
+            });
         }
 
         return accounts;
