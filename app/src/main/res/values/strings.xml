@@ -5,6 +5,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="add">Add</string>
+    <string name="account_transfer">Account Import/Export</string>
     <string name="log_out">Log Out</string>
     <string name="data">data</string>
     <string name="site">Site</string>

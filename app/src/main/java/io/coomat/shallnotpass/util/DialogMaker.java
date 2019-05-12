@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.telecom.Call;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import io.coomat.shallnotpass.R;
 import io.coomat.shallnotpass.model.Account;
+import io.coomat.shallnotpass.model.AccountTransferType;
 import io.coomat.shallnotpass.model.CallBack;
 
 public class DialogMaker {
@@ -32,6 +34,38 @@ public class DialogMaker {
         dialog.show();
     }
 
+    public void showChoiceDialog(Context context, String title, String message, @NonNull final String option1, @NonNull final String option2, String cancelBtn, @NonNull final CallBack<String> callback) {
+        if (TextUtils.isEmpty(cancelBtn)) cancelBtn = "Cancel";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+
+        if (!TextUtils.isEmpty(title)) builder.setTitle(title);
+
+        builder.setMessage(message);
+
+        builder.setPositiveButton(option2, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callback.fire(option2);
+            }
+        });
+
+        builder.setNegativeButton(option1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callback.fire(option1);
+            }
+        });
+
+        builder.setNeutralButton(cancelBtn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
+    }
 
     public void showInputDialog(Context context, int inputType, String title, String positiveBtn, String cancelBtn, @NonNull final CallBack<String> callback) {
         if (TextUtils.isEmpty(positiveBtn)) positiveBtn = "OK";
@@ -153,6 +187,10 @@ public class DialogMaker {
         });
 
         builder.show();
+    }
+
+    public void showAccountTransferDialog(Context context, @NonNull final CallBack<String> callback) {
+        showChoiceDialog(context, "Account Transfer", "Would you like to import accounts or export accounts?", AccountTransferType.IMPORT.name(), AccountTransferType.EXPORT.name(), null, callback);
     }
 
     public void showConfirmDialog(Context context, String title, String message, String positiveBtn, String noBtn, String cancelBtn, @NonNull final CallBack<Boolean> callback) {

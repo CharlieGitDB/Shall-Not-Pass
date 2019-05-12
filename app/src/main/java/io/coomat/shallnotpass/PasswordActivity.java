@@ -1,6 +1,9 @@
 package io.coomat.shallnotpass;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.codecrafters.tableview.TableView;
@@ -10,13 +13,17 @@ import de.codecrafters.tableview.model.TableColumnWeightModel;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import io.coomat.shallnotpass.adapter.AccountDataAdapter;
 import io.coomat.shallnotpass.helper.AccountHelper;
+import io.coomat.shallnotpass.helper.AccountTransferHelper;
 import io.coomat.shallnotpass.model.Account;
+import io.coomat.shallnotpass.model.AccountTransferType;
 import io.coomat.shallnotpass.model.CallBack;
 import io.coomat.shallnotpass.util.DialogMaker;
 import io.coomat.shallnotpass.util.StringUtils;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +40,7 @@ public class PasswordActivity extends AppCompatActivity {
 
     private DialogMaker dialogMaker = new DialogMaker();
     private AccountHelper accountHelper;
+    private AccountTransferHelper accountTransferHelper;
 
     private final String[] AccountsHeader = { "Site", "Username", "Password" };
 
@@ -49,6 +57,7 @@ public class PasswordActivity extends AppCompatActivity {
         context = this;
 
         accountHelper = new AccountHelper(context);
+        accountTransferHelper = new AccountTransferHelper(context);
 
         setTableConfigs();
     }
@@ -121,6 +130,21 @@ public class PasswordActivity extends AppCompatActivity {
         };
     }
 
+    private CallBack<String> handleAccountTransfer() {
+        return new CallBack<String>() {
+            @Override
+            public void fire(String data) {
+                if (data.equals(AccountTransferType.IMPORT.name())) {
+                    List<Account> accounts = accountTransferHelper.importAccounts();
+                    tableView.setDataAdapter(new AccountDataAdapter(context, accounts));
+                } else {
+                    accountTransferHelper.exportAccounts();
+                    Toast.makeText(context, "Accounts data has been saved in Downloads folder", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+    }
+
     private CallBack<Boolean> handleLogOut() {
         return new CallBack<Boolean>() {
             @Override
@@ -158,6 +182,13 @@ public class PasswordActivity extends AppCompatActivity {
                         null,
                         handleAddAccount()
                 );
+                break;
+            case R.id.accountTransfer:
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(PasswordActivity.this, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE }, 200);
+                } else {
+                    dialogMaker.showAccountTransferDialog(context, handleAccountTransfer());
+                }
                 break;
             case R.id.logOut:
                 dialogMaker.showConfirmDialog(

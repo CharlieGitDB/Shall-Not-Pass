@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +33,20 @@ public class AccountHelper {
         editor.putString(account.getUuid(), accountToJson(account));
         editor.commit();
 
-        List<Account> accounts = getAllAccounts();
+        return getAllAccounts();
+    }
 
-        return accounts;
+    public List<Account> addRawAccounts(List<Account> rawAccounts) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        if (rawAccounts == null || rawAccounts.isEmpty()) return rawAccounts;
+
+        for (Account rawAccount : rawAccounts) {
+            editor.putString(rawAccount.getUuid(), accountToJson(rawAccount));
+            editor.commit();
+        }
+
+        return getAllAccounts();
     }
 
     public List<Account> removeAccount(String uuid) {
@@ -57,6 +69,31 @@ public class AccountHelper {
 
             account.setUsername(EncryptUtil.decrypt(account.getUsername()));
             account.setPassword(EncryptUtil.decrypt(account.getPassword()));
+
+            accounts.add(account);
+        }
+
+        if (accounts.size() > 0) {
+            Collections.sort(accounts, new Comparator<Account>() {
+                @Override
+                public int compare(final Account a1, final Account a2) {
+                    return a1.getSite().compareTo(a2.getSite());
+                }
+            });
+        }
+
+        return accounts;
+    }
+
+    public List<Account> getAllAcountsRaw() {
+        Map<String, ?> rawAccounts = sharedPref.getAll();
+
+        List<Account> accounts = new ArrayList<Account>();
+
+        for (Map.Entry<String, ?> rawAccount : rawAccounts.entrySet()) {
+            String accountJson = (String) rawAccounts.get(rawAccount.getKey());
+
+            Account account = jsonToAccount(accountJson);
 
             accounts.add(account);
         }
