@@ -24,6 +24,9 @@ public class AccountHelper {
         sharedPref = context.getSharedPreferences(DATA, Context.MODE_PRIVATE);
     }
 
+    /**
+     * Adds and encrypts an account to the persisted data
+     */
     public List<Account> addAccount(Account account) {
         SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -36,6 +39,9 @@ public class AccountHelper {
         return getAllAccounts();
     }
 
+    /**
+     * Adds "raw" (already encrypted) accounts to the persisted data
+     */
     public List<Account> addRawAccounts(List<Account> rawAccounts) {
         SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -49,6 +55,9 @@ public class AccountHelper {
         return getAllAccounts();
     }
 
+    /**
+     * Removes an account from the persisted data
+     */
     public List<Account> removeAccount(String uuid) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.remove(uuid);
@@ -57,6 +66,9 @@ public class AccountHelper {
         return getAllAccounts();
     }
 
+    /**
+     * Gets all of the accounts and decrypts and sorts them by site name alphabetically
+     */
     public List<Account> getAllAccounts() {
         Map<String, ?> rawAccounts = sharedPref.getAll();
 
@@ -78,6 +90,9 @@ public class AccountHelper {
         return accounts;
     }
 
+    /**
+     * Sorts a list of accounts alphabetically
+     */
     private void sortAccounts(List<Account> accounts) {
         if (accounts.size() > 0) {
             Collections.sort(accounts, new Comparator<Account>() {
@@ -89,19 +104,25 @@ public class AccountHelper {
         }
     }
 
-    public List<Account> getAccountsFromSearch(final String accountsToFind) {
+    /**
+     * Grabs all accounts containing a search query
+     */
+    public List<Account> getAccountsFromSearch(final String accountSearchQuery) {
         List<Account> accounts = getAllAccounts();
         List<Account> searchedAccounts = new ArrayList<Account>();
 
         if (accounts.size() > 0) {
             for (Account account : accounts) {
-                if (account.getSite().contains(accountsToFind)) searchedAccounts.add(account);
+                if (account.getSite().contains(accountSearchQuery)) searchedAccounts.add(account);
             }
         }
 
         return searchedAccounts;
     }
 
+    /**
+     * Gets all accounts from persisted data and returns them encrypted
+     */
     public List<Account> getAllAcountsRaw() {
         Map<String, ?> rawAccounts = sharedPref.getAll();
 

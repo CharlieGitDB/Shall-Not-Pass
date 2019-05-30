@@ -26,6 +26,9 @@ public class AccountTransferHelper {
         accountHelper = new AccountHelper(context);
     }
 
+    /**
+     * Takes in a JSON file containing encrypted accounts and applies them to the persisted data
+     */
     public List<Account> importAccounts() {
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(dir, "shallnotpassaccounts.json");
@@ -52,6 +55,9 @@ public class AccountTransferHelper {
         return accountHelper.addRawAccounts(rawAccounts);
     }
 
+    /**
+     * Creates a JSON file containing the persisted data
+     */
     public void exportAccounts() {
         Gson gson = new Gson();
 
@@ -61,6 +67,9 @@ public class AccountTransferHelper {
         writeAccountsToStorage(accountsJson);
     }
 
+    /**
+     * Writes the passed in JSON to the file system in the Downloads directory
+     */
     private void writeAccountsToStorage(String accountsJson) {
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(dir, "shallnotpassaccounts.json");

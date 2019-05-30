@@ -18,6 +18,9 @@ public class ConfigHelper {
         sharedPref = context.getSharedPreferences(MASTER_KEY, Context.MODE_PRIVATE);
     }
 
+    /**
+     * Checks if the user has already registered their master account
+     */
     public Boolean isRegistered() {
         String masterKey = sharedPref.getString(KEY_ENTRY, null);
 
@@ -26,12 +29,18 @@ public class ConfigHelper {
         return true;
     }
 
+    /**
+     * Checks if the password they have entered matches their master password
+     */
     public Boolean checkPw(String unhashed) {
         String masterKey = sharedPref.getString(KEY_ENTRY, null);
 
         return EncryptUtil.check(unhashed, masterKey);
     }
 
+    /**
+     * Adds the master password to the persisted data
+     */
     public void createKey(String password) {
         SharedPreferences.Editor editor = sharedPref.edit();
         String hash = EncryptUtil.createHash(password);

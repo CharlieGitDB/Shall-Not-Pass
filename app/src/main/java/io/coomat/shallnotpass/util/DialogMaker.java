@@ -20,6 +20,9 @@ import io.coomat.shallnotpass.model.CallBack;
 
 public class DialogMaker {
 
+    /**
+     * Create a dialog that is an alert displaying a message
+     */
     public void showMsgDialog(Context context, String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (!TextUtils.isEmpty(title)) builder.setTitle(title);
@@ -34,6 +37,9 @@ public class DialogMaker {
         dialog.show();
     }
 
+    /**
+     * Create a dialog that gives the user an option of two choices
+     */
     public void showChoiceDialog(Context context, String title, String message, @NonNull final String option1, @NonNull final String option2, String cancelBtn, @NonNull final CallBack<String> callback) {
         if (TextUtils.isEmpty(cancelBtn)) cancelBtn = "Cancel";
 
@@ -67,6 +73,9 @@ public class DialogMaker {
         builder.show();
     }
 
+    /**
+     * Create a dialog that takes input from the user
+     */
     public void showInputDialog(Context context, int inputType, String title, String positiveBtn, String cancelBtn, @NonNull final CallBack<String> callback) {
         if (TextUtils.isEmpty(positiveBtn)) positiveBtn = "OK";
         if (TextUtils.isEmpty(cancelBtn)) cancelBtn = "Cancel";
@@ -95,6 +104,9 @@ public class DialogMaker {
         builder.show();
     }
 
+    /**
+     * Create a dialog that displays the account details of the selected account
+     */
     public void showAccountDialog(Context context, Account account) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
 
@@ -129,6 +141,9 @@ public class DialogMaker {
         builder.show();
     }
 
+    /**
+     * Create a dialog that allows the user to add an account
+     */
     public void showAddUserDialog(Context context, String title, String positiveBtn, String cancelBtn, @NonNull final CallBack<Account> callback) {
         if (TextUtils.isEmpty(positiveBtn)) positiveBtn = "OK";
         if (TextUtils.isEmpty(cancelBtn)) cancelBtn = "Cancel";
@@ -189,10 +204,16 @@ public class DialogMaker {
         builder.show();
     }
 
+    /**
+     * Creates a dialog that allows the user to "transfer" their accounts.  They can import from a JSON file or save a JSON file of accounts
+     */
     public void showAccountTransferDialog(Context context, @NonNull final CallBack<String> callback) {
         showChoiceDialog(context, "Account Transfer", "Would you like to import accounts or export accounts?", AccountTransferType.IMPORT.name(), AccountTransferType.EXPORT.name(), null, callback);
     }
 
+    /**
+     * Creates a dialog that prompts the user for a response
+     */
     public void showConfirmDialog(Context context, String title, String message, String positiveBtn, String noBtn, String cancelBtn, @NonNull final CallBack<Boolean> callback) {
         if (TextUtils.isEmpty(positiveBtn)) positiveBtn = "YES";
         if (TextUtils.isEmpty(noBtn)) noBtn = "NO";
