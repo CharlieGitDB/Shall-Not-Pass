@@ -181,7 +181,6 @@ public class PasswordActivity extends AppCompatActivity implements MaterialSearc
 
     @Override
     public void onSearchStateChanged(boolean enabled) {
-        //do nothing
         if (!enabled) {
             List<Account> accounts = accountHelper.getAllAccounts();
             tableView.setDataAdapter(new AccountDataAdapter(context, accounts));
