@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.telecom.Call;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.widget.EditText;

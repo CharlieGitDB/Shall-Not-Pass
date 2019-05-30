@@ -2,7 +2,6 @@ package io.coomat.shallnotpass.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import io.coomat.shallnotpass.util.EncryptUtil;
 import io.coomat.shallnotpass.util.StringUtils;

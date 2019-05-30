@@ -5,7 +5,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnEditorAction;
 import io.coomat.shallnotpass.helper.ConfigHelper;
-import io.coomat.shallnotpass.util.EncryptUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
