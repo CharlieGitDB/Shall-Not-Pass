@@ -73,6 +73,12 @@ public class AccountHelper {
             accounts.add(account);
         }
 
+        sortAccounts(accounts);
+
+        return accounts;
+    }
+
+    private void sortAccounts(List<Account> accounts) {
         if (accounts.size() > 0) {
             Collections.sort(accounts, new Comparator<Account>() {
                 @Override
@@ -81,8 +87,19 @@ public class AccountHelper {
                 }
             });
         }
+    }
 
-        return accounts;
+    public List<Account> getAccountsFromSearch(final String accountsToFind) {
+        List<Account> accounts = getAllAccounts();
+        List<Account> searchedAccounts = new ArrayList<Account>();
+
+        if (accounts.size() > 0) {
+            for (Account account : accounts) {
+                if (account.getSite().contains(accountsToFind)) searchedAccounts.add(account);
+            }
+        }
+
+        return searchedAccounts;
     }
 
     public List<Account> getAllAcountsRaw() {

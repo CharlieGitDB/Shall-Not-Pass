@@ -29,14 +29,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.mancj.materialsearchbar.MaterialSearchBar;
+
 import java.util.List;
 
-public class PasswordActivity extends AppCompatActivity {
+public class PasswordActivity extends AppCompatActivity implements MaterialSearchBar.OnSearchActionListener {
 
     private Context context;
 
     @BindView(R.id.tableView)
     public TableView<Account> tableView;
+
+    @BindView(R.id.searchBar)
+    public MaterialSearchBar searchBar;
 
     private DialogMaker dialogMaker = new DialogMaker();
     private AccountHelper accountHelper;
@@ -58,6 +63,8 @@ public class PasswordActivity extends AppCompatActivity {
 
         accountHelper = new AccountHelper(context);
         accountTransferHelper = new AccountTransferHelper(context);
+
+        searchBar.setOnSearchActionListener(this);
 
         setTableConfigs();
     }
@@ -169,6 +176,27 @@ public class PasswordActivity extends AppCompatActivity {
         super.onCreateOptionsMenu(menu);
 
         return true;
+    }
+
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+        //do nothing
+        if (!enabled) {
+            List<Account> accounts = accountHelper.getAllAccounts();
+            tableView.setDataAdapter(new AccountDataAdapter(context, accounts));
+        }
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+        List<Account> accounts = accountHelper.getAccountsFromSearch(text.toString());
+        tableView.setDataAdapter(new AccountDataAdapter(context, accounts));
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+        //do nothing
     }
 
     @Override
