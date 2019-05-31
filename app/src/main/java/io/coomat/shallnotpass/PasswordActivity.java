@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mancj.materialsearchbar.MaterialSearchBar;
@@ -204,6 +205,7 @@ public class PasswordActivity extends AppCompatActivity implements MaterialSearc
             case R.id.addAccount:
                 dialogMaker.showAddUserDialog(
                         PasswordActivity.this,
+                        getLayoutInflater(),
                         "Add User",
                         null,
                         null,

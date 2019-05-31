@@ -3,6 +3,10 @@ package io.coomat.shallnotpass.util;
 import com.scottyab.aescrypt.AESCrypt;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.passay.CharacterData;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
 
 import java.security.GeneralSecurityException;
 
@@ -48,5 +52,26 @@ public class EncryptUtil {
         }
 
         return null;
+    }
+
+    public static String generateSafePassword() {
+        PasswordGenerator gen = new PasswordGenerator();
+        CharacterRule digits = new CharacterRule(EnglishCharacterData.Digit);
+        CharacterRule charsUp = new CharacterRule(EnglishCharacterData.UpperCase);
+        CharacterRule charsLow = new CharacterRule(EnglishCharacterData.LowerCase);
+
+        CharacterData specialChars = new CharacterData() {
+            public String getErrorCode() {
+                return "500";
+            }
+
+            public String getCharacters() {
+                return "!@#$%^&*()_+";
+            }
+        };
+
+        CharacterRule charsSpecial = new CharacterRule(specialChars);
+
+        return gen.generatePassword(16, digits, charsUp, charsLow, charsSpecial);
     }
 }

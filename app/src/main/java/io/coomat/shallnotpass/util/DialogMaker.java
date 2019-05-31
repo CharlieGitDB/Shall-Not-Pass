@@ -5,7 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.text.InputType;
+import android.text.Layout;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -143,42 +148,29 @@ public class DialogMaker {
     /**
      * Create a dialog that allows the user to add an account
      */
-    public void showAddUserDialog(Context context, String title, String positiveBtn, String cancelBtn, @NonNull final CallBack<Account> callback) {
+    public void showAddUserDialog(Context context, LayoutInflater layoutInflator, String title, String positiveBtn, String cancelBtn, @NonNull final CallBack<Account> callback) {
         if (TextUtils.isEmpty(positiveBtn)) positiveBtn = "OK";
         if (TextUtils.isEmpty(cancelBtn)) cancelBtn = "Cancel";
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
         if (!TextUtils.isEmpty(title)) builder.setTitle(title);
 
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
+        View view = layoutInflator.inflate(R.layout.account_create_dialog, null);
 
-        ColorStateList colorStateList = ColorStateList.valueOf(context.getResources().getColor(R.color.colorPrimary));
+        final EditText siteText = view.findViewById(R.id.editTextSite);
+        final EditText usernameText = view.findViewById(R.id.editTextUsername);
+        final EditText passwordText = view.findViewById(R.id.editTextPassword);
+        Button generatePasswordBtn = view.findViewById(R.id.generatePassword);
 
-        final EditText siteText = new EditText(context);
-        siteText.setHint(R.string.site);
-        siteText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-        siteText.setHintTextColor(context.getResources().getColor(R.color.colorPrimary));
-        siteText.setBackgroundTintList(colorStateList);
+        generatePasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String safePassword = EncryptUtil.generateSafePassword();
+                passwordText.setText(safePassword);
+            }
+        });
 
-        final EditText usernameText = new EditText(context);
-        usernameText.setHint(R.string.username);
-        usernameText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-        usernameText.setHintTextColor(context.getResources().getColor(R.color.colorPrimary));
-        usernameText.setBackgroundTintList(colorStateList);
-
-        final EditText passwordText = new EditText(context);
-        passwordText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        passwordText.setHint(R.string.password);
-        passwordText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-        passwordText.setHintTextColor(context.getResources().getColor(R.color.colorPrimary));
-        passwordText.setBackgroundTintList(colorStateList);
-
-        layout.addView(siteText);
-        layout.addView(usernameText);
-        layout.addView(passwordText);
-
-        builder.setView(layout);
+        builder.setView(view);
 
         builder.setPositiveButton(positiveBtn, new DialogInterface.OnClickListener() {
             @Override

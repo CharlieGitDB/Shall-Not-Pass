@@ -12,4 +12,6 @@
     <string name="intro_unregistered">Shall Not Pass is a free and open-source password manager that stores your passwords locally.\n\nAll data is encrypted saftely and securely!\n\nPlease create your master password</string>
     <string name="intro_registered">Shall Not Pass is a free and open-source password manager that stores your passwords locally.\n\nAll data is encrypted saftely and securely!\n\nPlease enter your master password</string>
     <string name="content_description">Shall Not Pass</string>
+    <string name="search_for_account">Search for account</string>
+    <string name="key">🔑</string>
 </resources>
