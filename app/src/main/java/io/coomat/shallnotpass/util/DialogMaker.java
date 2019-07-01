@@ -111,29 +111,37 @@ public class DialogMaker {
     /**
      * Create a dialog that displays the account details of the selected account
      */
-    public void showAccountDialog(Context context, Account account) {
+    public void showAccountDialog(final Context context, LayoutInflater layoutInflator, final Account account) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
 
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
+        View view = layoutInflator.inflate(R.layout.account_overview_dialog, null);
 
-        final TextView siteText = new TextView(context);
-        siteText.setText("Site: " + account.getSite());
-        siteText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+        final TextView siteText = view.findViewById(R.id.siteTextView);
+        final TextView usernameText = view.findViewById(R.id.usernameTextView);
+        final TextView passwordText = view.findViewById(R.id.passwordTextView);
 
-        final TextView usernameText = new TextView(context);
-        usernameText.setText("Username: " + account.getUsername());
-        usernameText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+        siteText.setText(account.getSite());
+        usernameText.setText(account.getUsername());
+        passwordText.setText(account.getPassword());
 
-        final TextView passwordText = new TextView(context);
-        passwordText.setText("Password: " + account.getPassword());
-        passwordText.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+        Button copyUsername = view.findViewById(R.id.copyUsername);
+        Button copyPassword = view.findViewById(R.id.copyPassword);
 
-        layout.addView(siteText);
-        layout.addView(usernameText);
-        layout.addView(passwordText);
+        copyUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardUtil.copyTextToClipBoard(context, "Username", account.getUsername());
+            }
+        });
 
-        builder.setView(layout);
+        copyPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardUtil.copyTextToClipBoard(context, "Password", account.getPassword());
+            }
+        });
+
+        builder.setView(view);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override

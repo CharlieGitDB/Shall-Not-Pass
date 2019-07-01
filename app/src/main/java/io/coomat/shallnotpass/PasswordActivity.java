@@ -86,6 +86,7 @@ public class PasswordActivity extends AppCompatActivity implements MaterialSearc
             public void onDataClicked(int rowIndex, Account account) {
                 dialogMaker.showAccountDialog(
                         PasswordActivity.this,
+                        getLayoutInflater(),
                         account
                 );
             }

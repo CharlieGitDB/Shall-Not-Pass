@@ -14,4 +14,5 @@
     <string name="content_description">Shall Not Pass</string>
     <string name="search_for_account">Search for account</string>
     <string name="key">🔑</string>
+    <string name="copy">📋</string>
 </resources>
